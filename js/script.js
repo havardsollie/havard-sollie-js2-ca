@@ -18,15 +18,12 @@ async function createList() {
     if (doesArticleExist) {
       cssClass = "fa";
     }
- 
-    let title = product.title;
-    let summary = product.summary;
-    let author = product.author;
+
     container.innerHTML += `<div class="products">
-                              <h2>${title}</h1>
-                              <p>${summary}</p>
-                              <p>${author}</p>
-                              <i class="far fa-heart" data-id"${product.id}" data-name="${title}"></i>
+                              <h2>${product.title}</h1>
+                              <p>${product.summary}</p>
+                              <p>${product.author}</p>
+                              <i class="far fa-heart" data-id="${product.id}" data-name="${product.title}"></i>
                             </div>`
 
     const iconToClick = document.querySelectorAll(".products i");
@@ -57,6 +54,7 @@ function addToList() {
     const article = { id: id, title: name };
     currentFavorites.push(article);
     saveToFavorites(currentFavorites);
+    console.log(currentFavorites)
   }
   else {
     const newFavorites = currentFavorites.filter((fav) => fav.id !== id);
