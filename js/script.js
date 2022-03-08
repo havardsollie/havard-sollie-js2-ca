@@ -1,58 +1,29 @@
+import { displayData } from "./data/displayData.js";
 import { getExistingFavorites } from "./utilities/getExistingFavorites.js";
+import { searchInData } from "./utilities/search.js";
+import { displayMessage } from "./utilities/displayMessage.js";
 
 const url = "http://localhost:1337/articles";
-const productContainer = document.querySelector(".product-container");
-const search = document.querySelector("input.search");
-
-const favorites = getExistingFavorites();
 
 async function createList() {
-  const response = await fetch(url);
-  globalThis.data = await response.json();
 
-  productContainer.innerHTML = "";
-  
-  data.forEach((product) => {
-    let cssClass = "far";
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
 
-    const doesArticleExist = favorites.find(function (fav) {
-      return parseInt(fav.id) === data.id;
-    })
-
-    if (doesArticleExist) {
-      cssClass = "fa";
-    }
-
-    productContainer.innerHTML += `<div class="products">
-                              <h2>${product.title}</h1>
-                              <p>${product.summary}</p>
-                              <p>${product.author}</p>
-                              <i class="far fa-heart" data-id="${product.id}" data-name="${product.title}"></i>
-                            </div>`
+    displayData(data);
+    searchInData(data);
 
     const iconToClick = document.querySelectorAll(".products i");
 
     iconToClick.forEach((icon) => {
         icon.addEventListener("click", addToList);
     });
-})
+  } catch (error) {
+    displayMessage("Error. Not recieving data", error)
+  }  
 }
 createList();
-
-search.onkeyup = function (event) {
-  const searchValue = event.target.value.trim().toLowerCase();
-
-  const filterTitles = data.filter(function(object) {
-    if(object.title.toLowerCase().startsWith(searchValue)) {
-      return true;
-    }
-  })
-  console.log(filterTitles);
-
-  data = filterTitles;
-
-  createList();
-}
 
 function addToList() {
   this.classList.toggle("fa");
@@ -60,6 +31,8 @@ function addToList() {
 
   const id = this.dataset.id;
   const name = this.dataset.name;
+  const summary = this.dataset["summary"];
+  const author = this.dataset["author"];
 
   const currentFavorites = getExistingFavorites();
 
@@ -68,7 +41,7 @@ function addToList() {
   });
   
   if (ifArticleExist === undefined) {
-    const article = { id: id, title: name };
+    const article = { id: id, title: name, summary: summary, author: author };
     currentFavorites.push(article);
     saveToFavorites(currentFavorites);
   }
@@ -81,3 +54,4 @@ function addToList() {
 function saveToFavorites(favorites) {
   localStorage.setItem("favorites", JSON.stringify(favorites));
 }
+

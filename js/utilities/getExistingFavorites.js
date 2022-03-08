@@ -1,4 +1,4 @@
-export function getExistingFavorites() {
+export function getExistingFavorites(data) {
   const favorites = localStorage.getItem("favorites");
 
   if(favorites === null) {
