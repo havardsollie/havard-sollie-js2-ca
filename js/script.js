@@ -1,12 +1,17 @@
 import { getExistingFavorites } from "./utilities/getExistingFavorites.js";
 
 const url = "http://localhost:1337/articles";
-const container = document.querySelector(".container");
+const productContainer = document.querySelector(".product-container");
+const search = document.querySelector("input.search");
+
 const favorites = getExistingFavorites();
+
 
 async function createList() {
   const response = await fetch(url);
-  const data = await response.json();
+  let data = await response.json();
+
+  productContainer.innerHTML = "";
   
   data.forEach((product) => {
     let cssClass = "far";
@@ -19,7 +24,7 @@ async function createList() {
       cssClass = "fa";
     }
 
-    container.innerHTML += `<div class="products">
+    productContainer.innerHTML += `<div class="products">
                               <h2>${product.title}</h1>
                               <p>${product.summary}</p>
                               <p>${product.author}</p>
@@ -27,15 +32,31 @@ async function createList() {
                             </div>`
 
     const iconToClick = document.querySelectorAll(".products i");
-    console.log(iconToClick);
 
     iconToClick.forEach((icon) => {
         icon.addEventListener("click", addToList);
     });
+    search.onkeyup = function (event) {
+      console.log(event);
+      const searchValue = event.target.value.trim().toLowerCase();
+    
+      const filterTitles = data.filter(function(object) {
+        if(object.title.toLowerCase().startsWith(searchValue)) {
+          return true;
+        }
+      })
+      console.log(filterTitles);
+    
+      data = filterTitles;
+    
+      createList();
+    }
 })
 }
 
 createList();
+
+
 
 function addToList() {
   this.classList.toggle("fa");
@@ -54,7 +75,6 @@ function addToList() {
     const article = { id: id, title: name };
     currentFavorites.push(article);
     saveToFavorites(currentFavorites);
-    console.log(currentFavorites)
   }
   else {
     const newFavorites = currentFavorites.filter((fav) => fav.id !== id);
