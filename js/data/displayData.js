@@ -10,18 +10,18 @@ export function displayData (dataToDisplay) {
   dataToDisplay.forEach(function (product) {
     let cssClass = "far";
 
-    const doesArticleExist = favorites.find(function (fav) {
+    const checkExistenceOfArticle = favorites.find(function (fav) {
       return parseInt(fav.id) === product.id;
     })
 
-    if (doesArticleExist) {
+    if (checkExistenceOfArticle) {
       cssClass = "fa";
     }
 
     productContainer.innerHTML += `<div class="products">
-                              <h2>${product.title}</h1>
+                              <h3>${product.title}</h3>
                               <p>${product.summary}</p>
-                              <p>${product.author}</p>
+                              <p>Author: ${product.author}</p>
                               <i class="${cssClass} fa-heart" data-id="${product.id}" data-name="${product.title}" data-summary="${product.summary}" data-author="${product.author}"></i>
                             </div>`
   });

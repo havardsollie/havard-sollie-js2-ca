@@ -1,0 +1,46 @@
+body {
+  margin: 0 auto;
+  max-width: 80%;
+}
+
+.container {
+  padding: 20px;
+}
+
+.menu {
+  background: #778899;
+  height: 50px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.menu a {
+  text-decoration: none;
+  color: white;
+}
+
+.menu a.active {
+  text-decoration: 5px black underline;
+}
+
+.product-container {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: rgb(234, 230, 230);
+  margin-top: 50px;
+}
+
+.products {
+  text-align: center;
+}
+
+h3 {
+  color: #778899;
+}
+
+.products i.fa {
+  color: #778899;
+}

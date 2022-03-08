@@ -1,35 +1,22 @@
 import { getExistingFavorites } from "./utilities/getExistingFavorites.js";
-import { displayData } from "./data/displayData.js";
+import { clearTheList } from "./utilities/clearingTheList.js";
+
+clearTheList();
 
 const favorites = getExistingFavorites();
-
+const clearListButton = document.querySelector("#clear");
 const productContainer = document.querySelector(".product-container");
 
 if(favorites.length === 0) {
+  clearListButton.style.display = "none";
   productContainer.innerHTML = "There are no favorites";
 }
 
 favorites.forEach((product) => {
   productContainer.innerHTML += `<div class="products">
-                                  <h2>${product.title}</h1>
+                                  <h3>${product.title}</h3>
                                   <p>${product.summary}</p>
                                   <p>${product.author}</p>
                                   <i class="fa fa-heart"</i>
                                 </div>`
 });
-
-const clearListButton = document.querySelector("#clear");
-
-function clearTheList() {
-  clearListButton.addEventListener("click", clearList);
-
-  function clearList() {
-    localStorage.clear();
-
-    displayData([]);
-
-    productContainer.innerHTML = "The list has been cleared";
-  }
-}
-
-clearTheList();
