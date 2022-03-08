@@ -6,10 +6,9 @@ const search = document.querySelector("input.search");
 
 const favorites = getExistingFavorites();
 
-
 async function createList() {
   const response = await fetch(url);
-  let data = await response.json();
+  globalThis.data = await response.json();
 
   productContainer.innerHTML = "";
   
@@ -36,27 +35,24 @@ async function createList() {
     iconToClick.forEach((icon) => {
         icon.addEventListener("click", addToList);
     });
-    search.onkeyup = function (event) {
-      console.log(event);
-      const searchValue = event.target.value.trim().toLowerCase();
-    
-      const filterTitles = data.filter(function(object) {
-        if(object.title.toLowerCase().startsWith(searchValue)) {
-          return true;
-        }
-      })
-      console.log(filterTitles);
-    
-      data = filterTitles;
-    
-      createList();
-    }
 })
 }
-
 createList();
 
+search.onkeyup = function (event) {
+  const searchValue = event.target.value.trim().toLowerCase();
 
+  const filterTitles = data.filter(function(object) {
+    if(object.title.toLowerCase().startsWith(searchValue)) {
+      return true;
+    }
+  })
+  console.log(filterTitles);
+
+  data = filterTitles;
+
+  createList();
+}
 
 function addToList() {
   this.classList.toggle("fa");
